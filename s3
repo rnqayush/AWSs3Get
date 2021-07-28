@@ -1,0 +1,77 @@
+var stream = require('stream');
+const env = require('../config/s3.env'); 
+const AWS = require('aws-sdk');
+
+
+
+AWS.config.update({accessKeyId: 'AKIAS4JUWUT7OXTZBFAU', secretAccessKey: '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', region: 'us-east-1'})
+var s3 = new AWS.S3();
+
+var params = { 
+ Bucket: env.Bucket,
+}
+
+s3.listObjectsV2(params, function (err, data) {
+ if(err)throw err;
+ console.log(data.Contents[0].Owner);
+});
+
+
+
+
+
+ /*************  to get url  **************/
+
+ var stream = require('stream');
+const env = require('../config/s3.env'); 
+const AWS = require('aws-sdk');
+
+
+
+AWS.config.update({accessKeyId: 'AKIAS4JUWUT7OXTZBFAU', secretAccessKey: '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', region: 'us-east-1',signatureVersion: 'v4',})
+const s3 = new AWS.S3()
+	
+
+var params = { 
+ Bucket: env.Bucket,
+}
+
+s3.listObjectsV2(params, function (err, data) {
+ if(err)throw err;
+ console.log(data);
+ let images = []
+  for (let item of data.Contents) {
+   let url = s3.getSignedUrl('getObject', {
+     Bucket:env.Bucket,
+     Key: item.Key, 
+     Expires: 100
+   });
+   images.push(url);
+  }
+  console.log(images);
+});
+
+
+
+/*********** 
+
+const getSingedUrl = async () => {
+	const params = {
+		Bucket: env.Bucket,
+		Key: '2021/7/26/16/2021-07-26T16:20:44.mp4',
+		Expires: 60 * 5
+	  };
+	try {
+		const url = await new Promise((resolve, reject) => {
+		  s3.getSignedUrl('getObject', params, (err, url) => {
+			err ? reject(err) : resolve(url);
+		  });
+		});
+		console.log(url)
+	  } catch (err) {
+		if (err) {
+		  console.log(err)
+		}
+	  }
+	}
+	getSingedUrl()
