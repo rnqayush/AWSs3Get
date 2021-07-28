@@ -1,7 +1,7 @@
 var stream = require('stream');
 const env = require('../config/s3.env');
 const AWS = require('aws-sdk');
-AWS.config.update({ accessKeyId: 'AKIAS4JUWUT7OXTZBFAU', secretAccessKey: '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', region: 'us-east-1', signatureVersion: 'v4', })
+AWS.config.update({ accessKeyId: '', secretAccessKey: '', region: 'us-east-1', signatureVersion: 'v4', })
 const s3 = new AWS.S3()
 
 
